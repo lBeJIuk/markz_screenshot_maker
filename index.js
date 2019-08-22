@@ -19,6 +19,7 @@ if (cluster.isMaster) {
   const domain = require("domain");
   const server = require("http").createServer(async function(req, res) {
     const browser = await puppeteer.launch({
+      defaultViewport: { width: 1920, height: 1080 },
       args: [`--no-sandbox`]
     });
     const d = domain.create();
@@ -27,7 +28,7 @@ if (cluster.isMaster) {
       console.error("error", er.stack);
       try {
         //make sure we close down within 30 seconds
-        var killtimer = setTimeout(function() {
+        const killtimer = setTimeout(function() {
           process.exit(1);
         }, 30000);
         // But don't keep the process open just for that!
