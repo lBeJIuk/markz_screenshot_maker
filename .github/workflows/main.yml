@@ -29,7 +29,7 @@ jobs:
         npm i; \
         mkdir -p /var/screenmaker; \
         rm -rf /var/screenmaker; \
-        service screenmaker stop: \
+        service screenmaker stop; \
         ln -s /var/production/$DEPLOY_TIMESTAMP /var/screenmaker; \
         service screenmaker start;'
         shred key -n 10  -v -z -u
