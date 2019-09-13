@@ -27,6 +27,7 @@ jobs:
         git clone git@github.com:lBeJIuk/markz_screenshot_maker.git /var/production/$DEPLOY_TIMESTAMP; \
         cd /var/production/$DEPLOY_TIMESTAMP; \
         npm i; \
+        mkdir -p /var/screenmaker; \
         rm /var/screenmaker; \
         service screenmaker stop: \
         ln -s /var/production/$DEPLOY_TIMESTAMP /var/screenmaker; \
