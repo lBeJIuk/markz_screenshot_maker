@@ -28,7 +28,7 @@ jobs:
         cd /var/production/$DEPLOY_TIMESTAMP; \
         npm i; \
         mkdir -p /var/screenmaker; \
-        rm /var/screenmaker; \
+        rm -rf /var/screenmaker; \
         service screenmaker stop: \
         ln -s /var/production/$DEPLOY_TIMESTAMP /var/screenmaker; \
         service screenmaker start;'
