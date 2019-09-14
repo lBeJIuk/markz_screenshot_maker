@@ -20,7 +20,16 @@ if (cluster.isMaster) {
   const server = require("http").createServer(async function(req, res) {
     const browser = await puppeteer.launch({
       defaultViewport: { width: 1920, height: 1080 },
-      args: [`--no-sandbox`]
+      args: [
+        "--no-sandbox",
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
+        "--disable-setuid-sandbox",
+        "--no-first-run",
+        "--no-sandbox",
+        "--no-zygote",
+        "--single-process"
+      ]
     });
     const d = domain.create();
     d.on("error", function(er) {
