@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "Screenmaker",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "author": "lBejiuk",
   "license": "MIT",
   "dependencies": {

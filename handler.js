@@ -55,7 +55,7 @@ async function requestHandler(request, response, browser) {
     response.writeHead(405);
     response.write("Method not allowed");
     response.end();
-    return;
+    return Promise.resolve();
   }
   const [endpoint, rest] = request.url.split("?");
 
@@ -63,7 +63,7 @@ async function requestHandler(request, response, browser) {
     response.writeHead(403);
     response.write("Forbiden");
     response.end();
-    return;
+    return Promise.resolve();
   }
   const error = await endpoints[endpoint](request, response, browser, rest);
   if (typeof error !== "undefined") {
@@ -72,6 +72,7 @@ async function requestHandler(request, response, browser) {
     response.write(JSON.stringify(error));
     response.end();
   }
+  return Promise.resolve();
 }
 
 module.exports = requestHandler;

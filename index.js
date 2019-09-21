@@ -63,9 +63,10 @@ if (cluster.isMaster) {
     d.add(req);
     d.add(res);
     //Now run the handler function in the domain.
-    d.run(function() {
+    d.run(async function() {
       //You'd put your fancy application logic here.
-      requestHandler(req, res, browser);
+      await requestHandler(req, res, browser);
+      browser.close();
     });
   });
   server.listen(port);
