@@ -18,9 +18,9 @@ jobs:
   buildAndPublish:
     needs: test
     runs-on: ubuntu-latest
-      steps:
-      - name: Build $ Publish
-        uses: lbejiuk/adip@v1
-        with:
-          TOKEN: ${{secrets.token}}
-          PACKAGE_REPOSITORY: 'private_pkg'
+    steps:
+    - name: Build $ Publish
+      uses: lbejiuk/adip@v1
+      with:
+        TOKEN: ${{secrets.token}}
+        PACKAGE_REPOSITORY: 'private_pkg'
