@@ -25,3 +25,15 @@ jobs:
       with:
         TOKEN: ${{secrets.token}}
         PACKAGE_REPOSITORY: 'private_pkg'
+
+  deploy:
+    name: Deploy on server
+    runs-on: ubuntu-latest
+    needs: buildAndPublish
+    steps:
+      - name: Deploy on server
+        run: |
+          IMAGE_VERSION=$(echo "${{ github.sha }}" | cut -c 1-12)
+          SERVICE_NAME=book_themarkz_com_screenmaker
+          IMAGE_NAME=markz_screenshot_maker
+          curl "http://themarkz.com:9999/service/update?serviceName=$SERVICE_NAME&imageName=$IMAGE_NAME&imageVersion=$IMAGE_VERSION&token=${{ secrets. updaterToken }}" -v -f
