@@ -1,13 +1,13 @@
 const puppeteer = require("puppeteer");
-const http = require("http");
 const cluster = require("cluster");
 const requestHandler = require("./handler");
 // settings
 const port = Number(process.env.PORT) || 3333;
 // settings
+let browser;
+let domainInstance;
 
 if (cluster.isMaster) {
-  cluster.fork();
   cluster.fork();
   cluster.on("exit", function(worker) {
     console.log("Worker %d died", worker.id);
@@ -15,10 +15,9 @@ if (cluster.isMaster) {
   });
 } else {
   console.log("Worker %d running!", cluster.worker.id);
-
-  const domain = require("domain");
-  const server = require("http").createServer(async function(req, res) {
-    const browser = await puppeteer.launch({
+  (async function() {
+    const domain = require("domain");
+    browser = await puppeteer.launch({
       defaultViewport: { width: 1920, height: 1080 },
       args: [
         "--no-sandbox",
@@ -31,8 +30,8 @@ if (cluster.isMaster) {
         "--single-process"
       ]
     });
-    const d = domain.create();
-    d.on("error", function(er) {
+    domainInstance = domain.create();
+    domainInstance.on("error", function(er) {
       //something unexpected occurred
       console.error("error", er.stack);
       try {
@@ -58,16 +57,18 @@ if (cluster.isMaster) {
         console.error("Error sending 500!", er2.stack);
       }
     });
-    //Because req and res were created before this domain existed,
-    //we need to explicitly add them.
-    d.add(req);
-    d.add(res);
-    //Now run the handler function in the domain.
-    d.run(async function() {
-      //You'd put your fancy application logic here.
-      await requestHandler(req, res, browser);
-      browser.close();
+    const server = require("http").createServer(async function(req, res) {
+      //Because req and res were created before this domain existed,
+      //we need to explicitly add them.
+      domainInstance.add(req);
+      domainInstance.add(res);
+      //Now run the handler function in the domain.
+      domainInstance.run(async function() {
+        //You'd put your fancy application logic here.
+        await requestHandler(req, res, browser);
+      });
     });
-  });
-  server.listen(port);
+    server.listen(port);
+  })();
 }
+process.on("exit", () => browser.close());
