@@ -12,7 +12,10 @@ RUN apt-get update -y && apt-get install -y \
   libgtk-3-0 \
   libnss3 \
   libxss1 \
-  libasound2
+  libasound2 \
+  libxcb-dri3-dev \
+  libdrm-dev \
+  libgbm-dev
 
 #  libpangocairo-1.0-0 \
 #  libcups2 \
