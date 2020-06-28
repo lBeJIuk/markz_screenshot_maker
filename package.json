@@ -9,7 +9,7 @@
   "author": "lBejiuk",
   "license": "MIT",
   "dependencies": {
-    "puppeteer": "^3.0.4"
+    "puppeteer": "^4.0.1"
   },
   "devDependencies": {
     "prettier": "^2.0.5"

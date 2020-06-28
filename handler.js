@@ -1,5 +1,5 @@
 const endpoints = {
-  "/image": async function(request, response, browser, queryString) {
+  "/image": async function (request, response, browser, queryString) {
     const parameter = queryString.split("&")[0];
     let error;
     if (typeof parameter === "string") {
@@ -9,7 +9,7 @@ const endpoints = {
         if (imageResponse.response) {
           response.writeHead(200, {
             "Content-Type": "image/jpeg",
-            "Content-Length": imageResponse.response.length
+            "Content-Length": imageResponse.response.length,
           });
           try {
             await response.write(imageResponse.response);
@@ -29,13 +29,13 @@ const endpoints = {
       error = ["no_query_string"];
     }
     return error;
-  }
+  },
 };
 
 async function getImage(name, url, browser) {
   const response = {
     response: undefined,
-    error: undefined
+    error: undefined,
   };
   const page = await browser.newPage();
   try {
@@ -44,8 +44,6 @@ async function getImage(name, url, browser) {
   } catch (e) {
     console.error("[Error]", e);
     response.error = ["server_does_not_respond"];
-  } finally {
-    await page.close();
   }
   return response;
 }
@@ -65,13 +63,21 @@ async function requestHandler(request, response, browser) {
     response.end();
     return Promise.resolve();
   }
-  const error = await endpoints[endpoint](request, response, browser, rest);
-  if (typeof error !== "undefined") {
-    // default
-    response.writeHead(200);
-    response.write(JSON.stringify(error));
+  try {
+    const error = await endpoints[endpoint](request, response, browser, rest);
+    if (typeof error !== "undefined") {
+      // default
+      response.writeHead(200);
+      response.write(JSON.stringify(error));
+      response.end();
+    }
+  } catch (e) {
+    response.writeHead(403);
+    response.write("Forbiden");
     response.end();
+    return Promise.resolve();
   }
+
   return Promise.resolve();
 }
 
