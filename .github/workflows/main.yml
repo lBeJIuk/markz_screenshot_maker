@@ -35,7 +35,7 @@ jobs:
         run: |
           IMAGE_VERSION=$(echo "${{ github.sha }}" | cut -c 1-12)
           SERVICE_NAME=book_themarkz_com_screenmaker
-          curl "https://themarkz.com:9999/service/update -v -f \
+          curl "https://themarkz.com:9999/service/update" -v -f \
             -x PUT \
             -H "_xtoken: ${{ secrets.updaterToken }} \
             -H "Content-Type: application/json" \
