@@ -37,6 +37,6 @@ jobs:
           SERVICE_NAME=book_themarkz_com_screenmaker
           curl "https://themarkz.com:9999/service/update" -v -f \
             -X PUT \
-            -H "_xtoken: ${{ secrets.updaterToken }} \
+            -H "_xtoken: ${{ secrets.updaterToken }}" \
             -H "Content-Type: application/json" \
-            -d '{"serviceName": "$SERVICE_NAME", "imageVersion": "$IMAGE_VERSION"}'
+            -d "{\"serviceName\": \"$SERVICE_NAME\", \"imageVersion\": \"$IMAGE_VERSION\"}"
